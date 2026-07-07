@@ -149,8 +149,10 @@ activemq-data/
 
 # Environments
 .env
+.env.*
+!.env.example
 .envrc
-.venv
+.venv/
 env/
 venv/
 ENV/
@@ -216,3 +218,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project data and experiment artifacts
+data/
+outputs/
+multirun/
+wandb/
+
+# Model checkpoints and exported artifacts
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+
+# Local notebooks and scratch work
+notebooks/.ipynb_checkpoints/
+scratch/
+tmp/
