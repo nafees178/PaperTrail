@@ -23,6 +23,12 @@ def objective(trial, cfg):
         [32, 64, 128],
     )
 
+    cfg.training.epochs = trial.suggest_int(
+        "epochs",
+        1,
+        20,
+    )
+
     cfg.model.conv1_channels = trial.suggest_categorical(
         "conv1_channels",
         [4, 8, 12],

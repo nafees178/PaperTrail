@@ -4,14 +4,22 @@ from torch.utils.data import DataLoader
 
 def get_dataloaders(batch_size=64):
 
-    transform = transforms.Compose([transforms.ToTensor()])
+    train_transform = transforms.Compose([
+        transforms.RandomRotation(10),
+        transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),
+        transforms.ToTensor()
+    ])
+    
+    test_transform = transforms.Compose([
+        transforms.ToTensor()
+    ])
 
     train_dataset = datasets.MNIST(
-        root="data", train=True, download=True, transform=transform
+        root="data", train=True, download=True, transform=train_transform
     )
 
     test_dataset = datasets.MNIST(
-        root="data", train=False, download=True, transform=transform
+        root="data", train=False, download=True, transform=test_transform
     )
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)

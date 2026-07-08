@@ -90,6 +90,7 @@ def run_experiment(cfg):
         model.parameters(),
         lr=cfg.training.learning_rate
     )
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=2, gamma=0.5)
     accuracy = 0.0
     for epoch in range(cfg.training.epochs):
 
@@ -107,17 +108,22 @@ def run_experiment(cfg):
             device,
         )
         accuracy = test_accuracy
+        
+        current_lr = scheduler.get_last_lr()[0]
+        scheduler.step()
 
         print(
-            f"Epoch [{epoch+1}/{cfg.training.epochs}] "
+            f"Epoch {epoch+1} "
+            f"| LR: {current_lr:.6f} "
             f"| Loss: {train_loss:.4f} "
-            f"| Test Accuracy: {test_accuracy:.2f}%"
+            f"| Test Accuracy: {test_accuracy:.2f}% "
             f"| Parameters: {num_params:,}"
         )
 
         wandb.log(
             {
                 "Epoch": epoch + 1,
+                "Learning Rate": current_lr,
                 "Train Loss": train_loss,
                 "Test Accuracy": test_accuracy,
                 "Parameters": num_params,
